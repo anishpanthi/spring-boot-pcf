@@ -1,0 +1,63 @@
+---
+spring:
+  profiles:
+    active: local
+  application:
+    name: spring-boot-pcf
+  boot:
+    admin:
+      context-path: /dashboard
+      ui:
+        brand: <span>App Dashboard</span>
+        title: App Dashboard
+  datasource:
+    url: jdbc:h2:mem:user_management;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false
+
+server:
+  port: 9090
+  servlet:
+    context-path: /app/api
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+swagger:
+  api:
+    title: UserManagement-API
+    description: API which demos CRUD operations on User
+    termsOfServiceUrl: http://blog.anishpanthi.net
+    version: 1.0
+    controller:
+      basepackage: com.app.springboot.pcf.controller
