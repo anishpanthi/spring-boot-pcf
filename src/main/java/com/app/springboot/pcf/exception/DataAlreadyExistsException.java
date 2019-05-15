@@ -6,9 +6,9 @@ import lombok.Getter;
  * @author Anish Panthi
  */
 @Getter
-public class SearchNotFoundException extends Exception{
+public class DataAlreadyExistsException extends Exception{
 
-    public SearchNotFoundException(String message){
+    public DataAlreadyExistsException(String message){
         super(message);
     }
 }
