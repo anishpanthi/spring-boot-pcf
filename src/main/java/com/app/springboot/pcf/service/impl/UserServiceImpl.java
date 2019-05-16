@@ -107,14 +107,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUsername(String username){
-        User userOptional = null;
+    public Optional<User> findByUsername(String username) {
+        Optional<User> userOptional = Optional.empty();
         try {
             userOptional = userRepository.findByUsername(username);
         } catch (Exception e) {
             log.error("", e);
         }
         return userOptional;
+    }
+
+    @Override
+    public User findByUsernameAndPassword(String username, String password) {
+        User userInDb;
+        try {
+            userInDb = userRepository.findByUsernameAndPassword(username, password);
+            if (userInDb == null) {
+                throw new NotFoundException("Username or Password mismatched!!!");
+            }
+        } catch (Exception e) {
+            log.error("", e);
+            throw new ApiException(e.getMessage());
+        }
+        return userInDb;
     }
 
     private Object saveOrUpdate(UserDto userDto, String operation) throws ApiException {
@@ -133,4 +148,5 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 }

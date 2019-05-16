@@ -4,6 +4,7 @@ import com.app.springboot.pcf.security.JwtAuthenticationEntryPoint;
 import com.app.springboot.pcf.security.JwtAuthenticationProvider;
 import com.app.springboot.pcf.security.JwtAuthenticationSuccessHandler;
 import com.app.springboot.pcf.security.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,8 @@ import java.util.Arrays;
 @EnableAutoConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class JwtAuthenticationConfig extends WebSecurityConfigurerAdapter {
-    private static final String BASE_URL = "/api/v0.1";
+
+    private static final String BASE_URL = "/v1";
 
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
@@ -53,26 +55,26 @@ public class JwtAuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 // we don't need CSRF because our token is invulnerable
                 .csrf().disable()
-                // permit swagger and signup for all
-                .authorizeRequests().antMatchers(BASE_URL + "/user/**",
-                BASE_URL + "/messages", "/swagger-ui.html", BASE_URL + "/ping", BASE_URL + "/version")
+                // permit swagger, console, auth and dashboard for all
+                .authorizeRequests().antMatchers( "/console/**", "/dashboard/**", "/swagger-ui.html", "/auth", "/*.html",
+                "/**/*.css", "/**/*.js", "/v2/api-docs", "/api-docs", "/configuration/ui",
+                "/swagger-resources", "/configuration/security", "/favicon.ico", "/**/*.html",
+                "/webjars/**", "/swagger-resources/configuration/security",
+                "/swagger-resources/configuration/ui")
                 .permitAll().and()
-                // All others urls must be authenticated (filter for token
-                // always fires)
-                .authorizeRequests().antMatchers("/api/**").authenticated().and()
+                // All others urls must be authenticated (filter for token always fires)
+                .authorizeRequests().antMatchers("/v1/**").authenticated().and()
                 // Call our errorHandler if authentication/authorisation fails
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
-//                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(SIGNUP_BASE_URL));
         // don't create session
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Custom JWT based security filter
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-//                .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
-
         // disable page caching
         httpSecurity.headers().cacheControl();
     }
 
+    @Autowired
     public JwtAuthenticationConfig(JwtAuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationProvider authenticationProvider) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.authenticationProvider = authenticationProvider;

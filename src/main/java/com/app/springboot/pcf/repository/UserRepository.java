@@ -14,5 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaRepositor
 
     User findByUsernameOrEmail(String username, String email);
 
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
+
+    User findByUsernameAndPassword(String username, String password);
 }

@@ -11,6 +11,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,14 +23,14 @@ import java.util.List;
  * @author Anish Panthi
  */
 @Slf4j
+@EnableEscapeForCGLibProxy
 public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
 
     @Value("${jwt.header}")
     private String tokenHeader;
 
     private static final List<RequestMatcher> PATHS = Arrays.asList(
-            new AntPathRequestMatcher("/api/v0.1/users/**"),
-            new AntPathRequestMatcher("/api/v0.1/messages-internal/**")
+            new AntPathRequestMatcher("/v1/users/**")
     );
 
     public JwtAuthenticationTokenFilter() {
@@ -52,5 +53,16 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
         JwtAuthenticationToken authRequest = new JwtAuthenticationToken(authToken);
 
         return getAuthenticationManager().authenticate(authRequest);
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
+            throws IOException, ServletException {
+        super.successfulAuthentication(request, response, chain, authResult);
+
+        log.info("Authenticated User: {}", authResult.getPrincipal());
+        // As this authentication is in HTTP header, after success we need to continue the request normally
+        // and return the response as if the resource was not secured at all
+        chain.doFilter(request, response);
     }
 }

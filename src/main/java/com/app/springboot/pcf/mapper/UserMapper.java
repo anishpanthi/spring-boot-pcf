@@ -2,6 +2,7 @@ package com.app.springboot.pcf.mapper;
 
 import com.app.springboot.pcf.domain.User;
 import com.app.springboot.pcf.dto.UserDto;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,13 +22,7 @@ public class UserMapper {
 
     private static Function<User, UserDto> userToUserDto = user -> {
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setEmail(user.getEmail());
-        userDto.setContact(user.getContact());
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
+        BeanUtils.copyProperties(user, userDto);
         return userDto;
     };
 

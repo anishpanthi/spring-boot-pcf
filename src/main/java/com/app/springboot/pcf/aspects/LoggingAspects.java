@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspects {
 
-    @Pointcut("within(com.app.springboot.pcf..*)")
+    @Pointcut("within(com.app.springboot.pcf..*)"
+            + "&& !@annotation(com.app.springboot.pcf.security.EnableEscapeForCGLibProxy)"
+            + "&& !@target(com.app.springboot.pcf.security.EnableEscapeForCGLibProxy)")
     public void logExceptionForAllMethods() {}
 
     @AfterThrowing(pointcut = "logExceptionForAllMethods()", throwing = "exception")

@@ -24,7 +24,7 @@ public interface BaseService<T, DT, ID> {
 
     Object delete(DT dt) throws ApiException;
 
-    T findByUsername(String username);
+    Optional<T> findByUsername(String username);
 
     default Object prepareSuccessCrudStatusDto(String operation) {
         CrudResponseDto crudResponseDto = new CrudResponseDto();

@@ -61,3 +61,14 @@ swagger:
     version: 1.0
     controller:
       basepackage: com.app.springboot.pcf.controller
+
+jwt:
+  validate: true
+  header: authorization
+  secret: b3e7f170-e2a4-11e7-80c1-9a214cf093ae
+
+logging:
+  level:
+    root: INFO
+    com.app.springboot.pcf: INFO
+    org.hibernate: INFO

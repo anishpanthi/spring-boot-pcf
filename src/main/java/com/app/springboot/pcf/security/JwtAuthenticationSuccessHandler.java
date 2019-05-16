@@ -19,5 +19,4 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
         // no need implementation as no redirect required
 
     }
-
 }
