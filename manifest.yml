@@ -1,3 +1,9 @@
 ---
 applications:
-  name: service-discovery
+  - name: service-discovery
+    memory: 512M
+    instances: 1
+    random-route: false
+    host: service-discovery
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git
+    path: ./build/libs/spring-boot-pcf-1.0.jar

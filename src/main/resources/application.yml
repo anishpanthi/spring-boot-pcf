@@ -3,37 +3,13 @@ spring:
   profiles:
     active: local
   application:
-    name: spring-boot-pcf
+    name: service-discovery
   boot:
     admin:
       context-path: /dashboard
       ui:
-        brand: <span>App Dashboard</span>
-        title: App Dashboard
-  datasource:
-    url: jdbc:h2:mem:user_management;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    platform: h2
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        show_sql: true
-        use_sql_comments: true
-        format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: false
+        brand: <span>Eagle Dashboard</span>
+        title: Eagle Dashboard
 
 server:
   port: 9090
@@ -53,22 +29,7 @@ management:
       exposure:
         include: '*'
 
-swagger:
-  api:
-    title: UserManagement-API
-    description: API which demos CRUD operations on User
-    termsOfServiceUrl: http://blog.anishpanthi.net
-    version: 1.0
-    controller:
-      basepackage: com.app.springboot.pcf.controller
-
-jwt:
-  validate: true
-  header: authorization
-  secret: b3e7f170-e2a4-11e7-80c1-9a214cf093ae
-
 logging:
   level:
     root: INFO
     com.app.springboot.pcf: INFO
-    org.hibernate: INFO
