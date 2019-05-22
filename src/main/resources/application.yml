@@ -8,8 +8,8 @@ spring:
     admin:
       context-path: /dashboard
       ui:
-        brand: <span>Eagle Dashboard</span>
-        title: Eagle Dashboard
+        brand: <span>APP Dashboard</span>
+        title: APP Dashboard
 
 server:
   port: 9090
